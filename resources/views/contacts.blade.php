@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacts</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" </head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+</head>
 
 <body>
     <div class=" mb-3">
@@ -62,7 +63,11 @@
                             {{ $data->password}}
                         </td>
                         <td>
-                            {{ $data->profile_pic}}
+                            @if ($data->profile_pic)
+                                <img src="{{ asset('storage/' . $data->profile_pic) }}" alt="{{ $data->name }} profile picture" width="70" height="70" class="rounded object-fit-cover">
+                            @else
+                                No image
+                            @endif
                         </td>
                         <td>
                             <a href={{ route("contacts.show" , $data-> id)}}>Show</a>

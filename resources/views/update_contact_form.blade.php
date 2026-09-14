@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
 </head>
 
 <body> 
@@ -38,14 +38,20 @@
 
                         <div>
                             <input type="password" name="password" id="password" class="form-control"
-                                placeholder="Enter password" value={{ $data->password }} >
+                                placeholder="Leave blank to keep current password">
                         </div>
 
                         <div class="mb-3">
                             <label for="profile_pic" class="form-label">Profile Picture</label>
 
+                            @if ($data->profile_pic)
+                                <div class="mb-2">
+                                    <img src="{{ asset('storage/' . $data->profile_pic) }}" alt="{{ $data->name }} profile picture" width="120" class="rounded">
+                                </div>
+                            @endif
+
                             <input type="file" name="profile_pic" id="profile_pic" class="form-control"
-                                accept=".jpg,.jpeg,.png" value="{{ $data->profile_pic }}"> 
+                                accept=".jpg,.jpeg,.png"> 
 
                         </div>
 

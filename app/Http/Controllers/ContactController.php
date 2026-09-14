@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -80,29 +81,46 @@ class ContactController extends Controller
      */
     public function update(Request $request, string $id)
     {
-            $request-> validate([
+        $request-> validate([
             'name' => 'required|max:100',
             'surname' => 'required|max:100',
             'email' => 'required|email|max:100',
             'mobile' => 'required|max:10',
-            'password' => 'required|min:8|max:20',
+            'password' => 'nullable|min:8|max:20',
             'profile_pic' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        $update= DB::table('contacts')->where('id', '=' , $id)->update([
+        $contact = DB::table('contacts')->find($id);
+
+        if (! $contact) {
+            return redirect()->route('contacts.index');
+        }
+
+        $profilePic = $contact->profile_pic;
+
+        if ($request->hasFile('profile_pic')) {
+            if ($profilePic) {
+                Storage::disk('public')->delete($profilePic);
+            }
+
+            $profilePic = $request->file('profile_pic')->store('profile_pics', 'public');
+        }
+
+        $contactData = [
             'name' => $request->name,
             'surname' => $request->surname,
             'email' => $request->email,
             'mobile' => $request->mobile,
-            'password' => bcrypt($request->password),
-            'profile_pic' => $request->file('profile_pic') ? $request->file('profile_pic')->store('profile_pics', 'public') : null,
-        ]);
+            'profile_pic' => $profilePic,
+        ];
 
-        if($update){
-            return redirect()->route('contacts.index');
+        if ($request->filled('password')) {
+            $contactData['password'] = bcrypt($request->password);
         }
 
-        return redirect() ->route('contacts.edit', $id);
+        $update= DB::table('contacts')->where('id', '=' , $id)->update($contactData);
+
+        return redirect()->route('contacts.index');
     }
 
     /**
