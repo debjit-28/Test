@@ -67,6 +67,24 @@ class ContactController extends Controller
         return view('single_contact', ['data' => $data]);
     }
 
+    public function image(string $id)
+    {
+        $contact = DB::table('contacts')->find($id);
+
+        if (! $contact || ! $contact->profile_pic) {
+            abort(404);
+        }
+
+        $profilePic = str_replace('\\', '/', $contact->profile_pic);
+        $profilePic = preg_replace('#^storage/#', '', $profilePic);
+
+        if (Storage::disk('public')->exists($profilePic)) {
+            return Storage::disk('public')->response($profilePic);
+        }
+
+        abort(404);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

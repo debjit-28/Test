@@ -15,7 +15,7 @@
         Password : {{ $data->password}} <br>
         Profile Image :
         @if ($data->profile_pic)
-            <img src="{{ asset('storage/' . $data->profile_pic) }}" alt="{{ $data->name }} profile picture" width="160" class="rounded mt-2">
+            <img src="{{ route('contacts.image', $data->id) }}" alt="{{ $data->name }} profile picture" width="160" class="rounded mt-2">
         @else
             No image
         @endif

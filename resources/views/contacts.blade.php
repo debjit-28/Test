@@ -64,7 +64,7 @@
                         </td>
                         <td>
                             @if ($data->profile_pic)
-                                <img src="{{ asset('storage/' . $data->profile_pic) }}" alt="{{ $data->name }} profile picture" width="70" height="70" class="rounded object-fit-cover">
+                                <img src="{{ route('contacts.image', $data->id) }}" alt="{{ $data->name }} profile picture" width="100" class="rounded">
                             @else
                                 No image
                             @endif

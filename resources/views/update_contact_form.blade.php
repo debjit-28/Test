@@ -46,7 +46,7 @@
 
                             @if ($data->profile_pic)
                                 <div class="mb-2">
-                                    <img src="{{ asset('storage/' . $data->profile_pic) }}" alt="{{ $data->name }} profile picture" width="120" class="rounded">
+                                    <img src="{{ route('contacts.image', $data->id) }}" alt="{{ $data->name }} profile picture" width="120" class="rounded">
                                 </div>
                             @endif
 
